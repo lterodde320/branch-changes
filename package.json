@@ -2,6 +2,7 @@
   "name": "branch-changes",
   "displayName": "branch-changes",
   "description": "See all the file diffs between the current branch and a selected branch.",
+  "publisher": "lterodde",
   "repository": {
     "type": "git",
     "url": "https://github.com/lterodde320/branch-changes.git"
