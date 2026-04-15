@@ -194,6 +194,62 @@ export function getCommittedFiles(
 }
 
 /**
+ * Get the merge-base commit between HEAD and a given branch
+ * @param workspaceRoot Path to the workspace root
+ * @param branch Branch to find the merge-base with
+ * @returns Promise with the merge-base commit hash
+ */
+export function getMergeBase(
+  workspaceRoot: string,
+  branch: string
+): Promise<string> {
+  return executeGitCommand(
+    `git merge-base HEAD ${branch}`,
+    workspaceRoot
+  );
+}
+
+/**
+ * Get the unified diff for a single file between the merge-base of HEAD and
+ * a given branch and the current working tree.
+ * @param workspaceRoot Path to the workspace root
+ * @param filePath Workspace-relative path to the file
+ * @param branch Branch to compare against
+ * @returns Promise with the raw unified diff output
+ */
+export async function getFileDiff(
+  workspaceRoot: string,
+  filePath: string,
+  branch: string
+): Promise<string> {
+  const gitPath = filePath.replace(/\\/g, "/");
+  const mergeBase = await getMergeBase(workspaceRoot, branch);
+  return executeGitCommand(
+    `git diff ${mergeBase} -- "${gitPath}"`,
+    workspaceRoot
+  );
+}
+
+/**
+ * Get the raw content of a file at a specific Git revision
+ * @param workspaceRoot Path to the workspace root
+ * @param filePath Workspace-relative path to the file
+ * @param revision A commit hash, branch name, or other Git revision
+ * @returns Promise with the file content as a string
+ */
+export function getFileContentAtRevision(
+  workspaceRoot: string,
+  filePath: string,
+  revision: string
+): Promise<string> {
+  const gitPath = filePath.replace(/\\/g, "/");
+  return executeGitCommand(
+    `git show ${revision}:"${gitPath}"`,
+    workspaceRoot
+  );
+}
+
+/**
  * Get the VS Code built-in Git API
  * @returns Promise with the Git API instance
  */
