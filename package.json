@@ -51,6 +51,10 @@
         "command": "gitChangedFiles.selectBranch",
         "title": "Select Comparison Branch",
         "icon": "$(git-branch)"
+      },
+      {
+        "command": "gitChangedFiles.showHunkDiff",
+        "title": "Show Diff for Hunk"
       }
     ],
     "menus": {
